@@ -52,6 +52,6 @@ def get_web_list():
 
 
 def notify():
-    playsound('mixkit-fast-small-sweep-transition-166.wav')
-    playsound('mixkit-fast-small-sweep-transition-166.wav')
-    playsound('mixkit-fast-small-sweep-transition-166.wav')
+    playsound('sweep.wav')
+    playsound('sweep.wav')
+    playsound('sweep.wav')

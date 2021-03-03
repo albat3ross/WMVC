@@ -4,9 +4,13 @@ WheresMyVideoCard (WMVC) is a simple script used to monitor the online stock ava
 popular online electronics retailers.  
 So far it's just for personal use.  
 
+## Installation
+
+`pip install -r requirements.txt`
+
 ## Updates
 
-#### v0.1 (Feb.03-2021)
+#### v0.1 (Feb.03.2021)
 - Implement the basic framework for WMVC
 - WMVC now supports reading from BestBuy and NewEgg
 - You can load new entries by adding them to 'web_list.csv'
