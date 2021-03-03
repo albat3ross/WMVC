@@ -24,7 +24,7 @@ class VCMonitor:
         self.runtime = runtime
         self.web_list = utils.get_web_list() if web_list is None else web_list
         utils.init_logger(logger_file_name)
-        logging.info(f'Start initializing gpu_getter ver.{VERSION}')
+        logging.info(f'Start initializing WMVC monitor ver.{VERSION}')
 
     def run(self):
         start_time = time.perf_counter()
@@ -56,7 +56,7 @@ class VCMonitor:
             curr_time = time.perf_counter()
             loop_cnt += 1
 
-        logging.info(f'gpu_getter finished running after {loop_cnt-1} loops.')
+        logging.info(f'WMVC monitor finished running after {loop_cnt-1} loops.')
 
     def read_once(self, web_name, result=None, index=None):
 
