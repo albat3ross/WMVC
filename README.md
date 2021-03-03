@@ -8,6 +8,13 @@ So far it's just for personal use.
 
 `pip install -r requirements.txt`
 
+## Run
+
+- add the website of the product you would like to monitor into `web_list.csv`,
+some example is given in the file already.
+- run `run.bat` file
+- Once the monitor found the product in stock, you should hear 3 sweeping sound.
+
 ## Updates
 
 #### v0.1.1 (Mar.03.2021)
