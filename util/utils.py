@@ -7,11 +7,9 @@ from colorlog import ColoredFormatter
 
 from web_info import WebInfo
 
-DEFAULT_LOGGER_NAME = 'runlog.log'
+
 LOG_FORMAT_SIMPLE = '%(asctime)s %(levelname)s : %(message)s'
 LOG_FORMAT_FULL = "%(log_color)s%(levelname)s%(reset)s | %(log_color)s%(message)s%(reset)s"
-
-WEB_LIST_CSV_NAME = 'web_list.csv'
 
 
 def init_logger(logger_file_name: str):
@@ -40,12 +38,12 @@ def process_soup(soup, web_info):
     return availabilityMessage.text not in web_info.available_message
 
 
-def get_web_list():
+def get_web_list(web_list_str):
     web_list = {}
-    with open(WEB_LIST_CSV_NAME) as web_list_csv:
+    with open(web_list_str) as web_list_csv:
         csv_reader = csv.reader(web_list_csv, delimiter=',')
         for row in csv_reader:
-            if len(row) < 3:
+            if len(row) < 3 or row[0][0] == '#':
                 continue
             web_list[row[1]] = WebInfo.GetWebInfo(row[2], row[0])
     return web_list

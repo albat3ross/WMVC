@@ -8,23 +8,38 @@ import threading
 import time
 
 from util import url_requester, utils
+from util.utils import notify
 
 VERSION = 0.1
 
 # TODO: adjust the running param here
 # run time for the script in sec
-DEFAULT_RUN_TIME = 60 * 1 * 1
+DEFAULT_RUN_TIME = 60 * 15 * 1
 # wait time between each inspection in sec, cannot be too short
 WAIT_TIME = 20
+# monitor list
+DEFAULT_LIST_STR = 'web_list.csv'
+DEFAULT_LOGGER_NAME = 'runlog.log'
 
 
 class VCMonitor:
     """Video Card Monitor class."""
-    def __init__(self, runtime=DEFAULT_RUN_TIME, logger_file_name=None, web_list=None):
+    def __init__(self, runtime=None, logger_file_name=None):
+
+        if runtime is None:
+            runtime = DEFAULT_RUN_TIME
+
+        if logger_file_name is None:
+            logger_file_name = DEFAULT_LOGGER_NAME
+
         self.runtime = runtime
-        self.web_list = utils.get_web_list() if web_list is None else web_list
+        self.web_list = utils.get_web_list(DEFAULT_LIST_STR)
         utils.init_logger(logger_file_name)
-        logging.info(f'Start initializing WMVC monitor ver.{VERSION}')
+        logging.info(f'Start initializing WMVC monitor [ver {VERSION}]')
+
+        logging.info(f'Preset runtime:       [{self.runtime // 3600}] hour | [{(self.runtime % 3600)//60}] minute | [{self.runtime %60}] second')
+        logging.info(f'Monitor list source:  [{DEFAULT_LIST_STR}].')
+        logging.info(f'Log file saving as:   [{logger_file_name}].')
 
     def run(self):
         start_time = time.perf_counter()
@@ -41,7 +56,7 @@ class VCMonitor:
 
         while curr_time - start_time < self.runtime:
             curr_time = time.perf_counter()
-            logging.info(f'LOOP {loop_cnt}')
+            logging.info(f'Inspection {loop_cnt}')
             result_list = [None for i in range(web_list_len)]
             for index, web_name in enumerate(self.web_list.keys()):
                 thread = threading.Thread(target=self.read_once, args=[web_name, result_list, index])
@@ -55,7 +70,6 @@ class VCMonitor:
                 time.sleep(rest_time)
             curr_time = time.perf_counter()
             loop_cnt += 1
-
         logging.info(f'WMVC monitor finished running after {loop_cnt-1} loops.')
 
     def read_once(self, web_name, result=None, index=None):

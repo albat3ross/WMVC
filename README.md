@@ -10,7 +10,11 @@ So far it's just for personal use.
 
 ## Updates
 
-#### v0.1 (Feb.03.2021)
+#### v0.1.1 (Mar.03.2021)
+- Implement the run script, now WMVC monitor can run without IDE (...)
+- Fix some naming issue
+
+#### v0.1 (Mar.02.2021)
 - Implement the basic framework for WMVC
 - WMVC now supports reading from BestBuy and NewEgg
 - You can load new entries by adding them to 'web_list.csv'
