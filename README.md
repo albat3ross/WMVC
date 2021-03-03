@@ -8,6 +8,12 @@ So far it's just for personal use.
 
 `pip install -r requirements.txt`
 
+## Supported online electronics retailers
+
+- [**BestBuy**](https://www.bestbuy.ca/en-ca)
+- [**NewEgg**](https://www.newegg.ca/)
+
+
 ## Run
 
 - Add the website of the product you would like to monitor into `web_list.csv` in format:  
