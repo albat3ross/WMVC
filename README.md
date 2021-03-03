@@ -10,10 +10,11 @@ So far it's just for personal use.
 
 ## Run
 
-- add the website of the product you would like to monitor into `web_list.csv`,
-some example is given in the file already.
-- run `run.bat` file
-- Once the monitor found the product in stock, you should hear 3 sweeping sound.
+- Add the website of the product you would like to monitor into `web_list.csv`,
+some examples are given in the file already.
+- Run `run.bat` file.
+- Once the monitor found the product is in stock, you should hear 3 sweeping sound.
+- You can adjust the server params in `wmvc.py`
 
 ## Updates
 

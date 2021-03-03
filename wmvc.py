@@ -17,8 +17,9 @@ VERSION = 0.1
 DEFAULT_RUN_TIME = 60 * 15 * 1
 # wait time between each inspection in sec, cannot be too short
 WAIT_TIME = 20
-# monitor list
+# monitor list file name
 DEFAULT_LIST_STR = 'web_list.csv'
+# logger file name
 DEFAULT_LOGGER_NAME = 'runlog.log'
 
 
