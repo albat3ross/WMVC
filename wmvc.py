@@ -1,5 +1,5 @@
 """
-GPU getter for personal use.
+WMVC main class
 Author: Han Zhou
 
 """
@@ -18,8 +18,8 @@ DEFAULT_RUN_TIME = 60 * 1 * 1
 WAIT_TIME = 20
 
 
-class GPUGetter:
-    """GPU getter class"""
+class VCMonitor:
+    """Video Card Monitor class."""
     def __init__(self, runtime=DEFAULT_RUN_TIME, logger_file_name=None, web_list=None):
         self.runtime = runtime
         self.web_list = utils.get_web_list() if web_list is None else web_list
@@ -82,4 +82,4 @@ class GPUGetter:
 
 
 if __name__ == '__main__':
-    GPUGetter().run()
+    VCMonitor().run()
