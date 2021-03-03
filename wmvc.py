@@ -35,7 +35,7 @@ class VCMonitor:
         if WAIT_TIME < url_requester.REQUEST_TIME_OUT:
             raise RuntimeError('Wait time cannot be less than request timeout.')
 
-        logging.info(f'Start running gpu_getter...\nMonitoring list length: {web_list_len}\n'
+        logging.info(f'Start running WMVC monitor...\nMonitoring list length: {web_list_len}\n'
                      f'Monitoring list:[{web_list_str} \n]\nWaiting time for each inspection: [{WAIT_TIME}s]\n')
         loop_cnt = 1
 
