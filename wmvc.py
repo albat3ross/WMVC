@@ -8,7 +8,6 @@ import threading
 import time
 
 from util import url_requester, utils
-from util.utils import notify
 
 VERSION = 0.1
 

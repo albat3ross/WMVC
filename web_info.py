@@ -10,8 +10,14 @@ DEFAULT_HEADER = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
 }
 
+SUPPORTED_WEB_LIST = [
+    'BestBuy',
+    'NewEgg',
+    'NewEgg_Combo',
+]
 
-def GetBestBuy(url):
+
+def getBestBuy(url):
 
     HEADER_BESTBUY = dict(DEFAULT_HEADER)
     HEADER_BESTBUY['authority'] = 'www.bestbuy.ca'
@@ -29,7 +35,7 @@ def GetBestBuy(url):
                    )
 
 
-def GetNewEgg(url):
+def getNewEgg(url):
 
     HEADER_NEWEGG = dict(DEFAULT_HEADER)
     HEADER_NEWEGG['authority'] = 'www.newegg.ca'
@@ -44,6 +50,14 @@ def GetNewEgg(url):
                    trace_tag=NEWEGG_TRACETAG,
                    ava_msg=NEWEGG_AVAILABLE_MESSAGE,
                    )
+
+
+def getNewEggCombo(url):
+    web_info = getNewEgg(url)
+    web_info.trace_tag = 'note'
+    web_info.trace_type = 'p'
+    web_info.available_message = ['OUT OF STOCK']
+    return web_info
 
 
 class WebInfo:
@@ -77,9 +91,11 @@ class WebInfo:
     @staticmethod
     def GetWebInfo(url, web_type):
         if web_type == 'BestBuy':
-            return GetBestBuy(url)
+            return getBestBuy(url)
         elif web_type == 'NewEgg':
-            return GetNewEgg(url)
+            return getNewEgg(url)
+        elif web_type == 'NewEgg_Combo':
+            return getNewEggCombo(url)
         else:
             raise NotImplementedError
 
