@@ -79,8 +79,8 @@ class VCMonitor:
             raise NotImplementedError
 
         web_info = self.web_list[web_name]
-        message = url_requester.request_general(web_info)
-        find = utils.process_soup(message, web_info)
+        message = url_requester.request_general(web_info, web_name)
+        find = utils.process_soup(message, web_info) if message else False
         status = 'In STOCK' if find else 'OUT OF STOCK'
 
         logging.debug(f'[{web_name}] | Status: {status}')

@@ -29,7 +29,7 @@ def mock_header(info):
     return header
 
 
-def request_general(info):
+def request_general(info, name):
     request_type = info.request
     tic = time.perf_counter()
     try:
@@ -41,9 +41,9 @@ def request_general(info):
             soup = BeautifulSoup(response_message, features="html.parser")
     except Exception as err:
         if type(err) == timeout:
-            logging.warning(f'{request_type} url timeout: [{info.url}] {err}')
+            logging.warning(f'{request_type} url timeout: [{name}] {err}')
         else:
-            logging.error(f'{request_type} url failed: [{info.url}] {err}')
+            logging.error(f'{request_type} url failed: [{name}] {err}')
     toc = time.perf_counter()
     logging.debug(f'Request {request_type}... [url: {info.url}]. Time taken:\t{toc - tic:0.4f}s')
     return soup
