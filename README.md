@@ -25,19 +25,19 @@ some examples are given in the csv file already.
 ## Updates
 
 #### v0.1.2 (Mar.04.2021)
-- Fix an issue when the load information is not as expected.
+- Fix an Runtime bug when the information is loaded not as expected.
 - Add auto configure functionality, now users can just add url to the csv without providing
-web_type and entry_name
-- Fix a lot of running bugs when thing went bad.
+web_type and entry_name.
+- Fix a lot of other Runtime issues when things went bad.
 
 #### v0.1.1 (Mar.03.2021)
-- Implement the run script, now WMVC monitor can run without IDE (...)
-- Fix some naming issue
+- Implement the run script, now WMVC monitor can run without IDE (...).
+- Fix some naming issue.
 
 #### v0.1 (Mar.02.2021)
-- Implement the basic framework for WMVC
-- WMVC now supports reading from BestBuy and NewEgg
-- You can load new entries by adding them to 'web_list.csv'
+- Implement the basic framework for WMVC.
+- WMVC now supports reading from BestBuy and NewEgg.
+- You can load new entries by adding them to 'web_list.csv'.
 
 
 ## License

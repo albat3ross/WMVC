@@ -41,9 +41,10 @@ def request_general(info, name):
             soup = BeautifulSoup(response_message, features="html.parser")
     except Exception as err:
         if type(err) == timeout:
-            logging.warning(f'{request_type} url timeout: [{name}] {err}')
+            logging.error(f'{request_type} url timeout: [{name}] {err}')
         else:
             logging.error(f'{request_type} url failed: [{name}] {err}')
+        return None
     toc = time.perf_counter()
     logging.debug(f'Request {request_type}... [url: {info.url}]. Time taken:\t{toc - tic:0.4f}s')
     return soup
