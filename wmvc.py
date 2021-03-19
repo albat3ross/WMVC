@@ -79,7 +79,7 @@ class VCMonitor:
                 time.sleep(rest_time)
             curr_time = time.perf_counter()
             loop_cnt += 1
-        logging.info(f'WMVC monitor finished running after {loop_cnt-1} loops.')
+        logging.info(f'WMVC monitor finished running after {loop_cnt} loops.')
 
     def read_once(self, web_name, result=None, index=None):
 
