@@ -1,11 +1,15 @@
 """Util functions for python"""
 import csv
+import json
 import logging
 import re
+
 from playsound import playsound
 from colorlog import ColoredFormatter
 
-from web_info import WebInfo, SUPPORTED_WEB_LIST
+import web_info
+from util.url_requester import request_general
+from web_info import WebInfo
 
 LOG_FORMAT_SIMPLE = '%(asctime)s %(levelname)s : %(message)s'
 LOG_FORMAT_FULL = "%(log_color)s%(levelname)s%(reset)s | %(log_color)s%(message)s%(reset)s"
@@ -14,7 +18,12 @@ LOG_FORMAT_FULL = "%(log_color)s%(levelname)s%(reset)s | %(log_color)s%(message)
 WEB_NAME_TO_TYPE = {
     'www.bestbuy.ca': 'BestBuy',
     'www.newegg.ca': 'NewEgg',
+    'www.pc-canada.com': 'PCCanada',
 }
+
+CRYPTO_LIST = [
+    'bitcoin',
+]
 
 
 def init_logger(logger_file_name: str):
@@ -42,6 +51,8 @@ def analyze_url(url):
         name = token[web_name_index + 2].split('=')[1]
     elif web_type == 'NewEgg' and token[web_name_index+1] is not None:
         name = token[web_name_index + 1]
+    elif web_type == 'PCCanada':
+        name = token[web_name_index + 2].split('?')[0]
     return [web_type, name, url]
 
 
@@ -67,6 +78,15 @@ def get_web_list(web_list_str):
             analyzed_url = analyze_url(row[0])
             web_list[analyzed_url[1]] = WebInfo.GetWebInfo(analyzed_url[2], analyzed_url[0])
     return web_list
+
+
+def get_latest_crypto_price():
+    TICKER_API_URL = 'https://blockchain.info/ticker'
+    soup = request_general(url=TICKER_API_URL,
+                           headers=web_info.DEFAULT_HEADER,
+                           name_tag='bitcoin',
+                           is_gzipped=True)
+    return json.loads(str(soup.currentTag))['USD']['last']
 
 
 def notify():

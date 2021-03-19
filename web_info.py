@@ -10,12 +10,6 @@ DEFAULT_HEADER = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
 }
 
-SUPPORTED_WEB_LIST = [
-    'BestBuy',
-    'NewEgg',
-    'NewEgg_Combo',
-]
-
 
 def getBestBuy(url):
 
@@ -60,6 +54,21 @@ def getNewEggCombo(url):
     return web_info
 
 
+def getPCCanada(url):
+    HEADER_PCCANADA = dict(DEFAULT_HEADER)
+    HEADER_PCCANADA['authority'] = 'www.pc-canada.com'
+
+    PCCANADA_TRACETAG = 'text-theme-shipping'
+    PCCANADA_AVAILABLE_MESSAGE = [' On Backorder']
+
+    return WebInfo(url=url,
+                   header=HEADER_PCCANADA,
+                   is_gzipped=True,
+                   trace_tag=PCCANADA_TRACETAG,
+                   trace_type='span',
+                   ava_msg=PCCANADA_AVAILABLE_MESSAGE)
+
+
 class WebInfo:
     """WebInfo class"""
     url: str
@@ -96,6 +105,8 @@ class WebInfo:
             return getNewEgg(url)
         elif web_type == 'NewEgg_Combo':
             return getNewEggCombo(url)
+        elif web_type == 'PCCanada':
+            return getPCCanada(url)
         else:
             raise NotImplementedError
 

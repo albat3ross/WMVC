@@ -3,17 +3,19 @@ WMVC main class
 Author: Han Zhou
 
 """
+import datetime
 import logging
 import threading
 import time
 
 from util import url_requester, utils
+from util.utils import get_latest_crypto_price
 
 VERSION = 0.1
 
 # TODO: adjust the running param here
 # run time for the script in sec
-DEFAULT_RUN_TIME = 60 * 15 * 1
+DEFAULT_RUN_TIME = 60 * 60 * 4
 # wait time between each inspection in sec, cannot be too short
 WAIT_TIME = 20
 # monitor list file name
@@ -36,7 +38,7 @@ class VCMonitor:
         self.web_list = utils.get_web_list(DEFAULT_LIST_STR)
         utils.init_logger(logger_file_name)
         logging.info(f'Start initializing WMVC monitor [ver {VERSION}]')
-
+        logging.info(f'Current time is {datetime.datetime.now().strftime("%H:%M:%S")}, the bitcoin price is [{get_latest_crypto_price()}]')
         logging.info(f'Preset runtime:       [{self.runtime // 3600}] hour | [{(self.runtime % 3600)//60}] minute | [{self.runtime %60}] second')
         logging.info(f'Monitor list source:  [{DEFAULT_LIST_STR}].')
         logging.info(f'Log file saving as:   [{logger_file_name}].')
@@ -52,19 +54,26 @@ class VCMonitor:
 
         logging.info(f'Start running WMVC monitor...\nMonitoring list length: {web_list_len}\n'
                      f'Monitoring list:[{web_list_str} \n]\nWaiting time for each inspection: [{WAIT_TIME}s]\n')
-        loop_cnt = 1
+        loop_cnt = 0
 
         while curr_time - start_time < self.runtime:
             curr_time = time.perf_counter()
-            logging.info(f'Inspection {loop_cnt}')
+            if loop_cnt == 0:
+                logging.info(f'Checking stock...')
+            else:
+                logging.info(f'Inspection {loop_cnt} started...')
             result_list = [None for i in range(web_list_len)]
             for index, web_name in enumerate(self.web_list.keys()):
                 thread = threading.Thread(target=self.read_once, args=[web_name, result_list, index])
                 thread.start()
             while None in result_list:
                 time.sleep(1)
+
             if True in result_list:
                 break
+            elif loop_cnt == 0:
+                logging.info('All monitored items are currently unavailable, start periodic monitoring program...')
+
             rest_time = WAIT_TIME - (time.perf_counter() - curr_time)
             if rest_time > 0.0:
                 time.sleep(rest_time)
@@ -79,7 +88,11 @@ class VCMonitor:
             raise NotImplementedError
 
         web_info = self.web_list[web_name]
-        message = url_requester.request_general(web_info, web_name)
+        message = url_requester.request_general(url=web_info.url,
+                                                request_type=web_info.request,
+                                                headers=web_info.header,
+                                                name_tag=web_name,
+                                                is_gzipped=web_info.is_gzipped)
         find = utils.process_soup(message, web_info) if message else False
         status = 'In STOCK' if find else 'OUT OF STOCK'
 

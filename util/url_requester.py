@@ -29,23 +29,22 @@ def mock_header(info):
     return header
 
 
-def request_general(info, name):
-    request_type = info.request
+def request_general(url, request_type='GET', headers={}, is_gzipped=False, name_tag="", resp_form=False):
     tic = time.perf_counter()
     try:
-        request_message = urllib.request.Request(url=info.url, data=mock_data(info), headers=mock_header(info),
-                                                 method=request_type)
+        request_message = urllib.request.Request(url=url, headers=headers, method=request_type)
         with urllib.request.urlopen(request_message, timeout=REQUEST_TIME_OUT) as response_message:
-            if info.is_gzipped:
+            if is_gzipped:
                 response_message = zlib.decompress(response_message.read(), 16 + zlib.MAX_WBITS)
+            if resp_form:
+                return response_message
             soup = BeautifulSoup(response_message, features="html.parser")
     except Exception as err:
         if type(err) == timeout:
-            logging.error(f'{request_type} url timeout: [{name}] {err}')
+            logging.error(f'{request_type} url timeout: [{name_tag}] {err}')
         else:
-            logging.error(f'{request_type} url failed: [{name}] {err}')
+            logging.error(f'{request_type} url failed: [{name_tag}] {err}')
         return None
     toc = time.perf_counter()
-    logging.debug(f'Request {request_type}... [url: {info.url}]. Time taken:\t{toc - tic:0.4f}s')
+    logging.debug(f'Request {request_type}... [url: {url}]. Time taken:\t{toc - tic:0.4f}s')
     return soup
-

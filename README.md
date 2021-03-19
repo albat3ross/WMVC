@@ -8,6 +8,7 @@ So far it's just for personal use.
 
 - [**BestBuy**](https://www.bestbuy.ca/en-ca)
 - [**NewEgg**](https://www.newegg.ca/)
+- [**PCCanada**](https://www.pc-canada.com/)
 
 
 ## Installation
@@ -23,6 +24,10 @@ some examples are given in the csv file already.
 - You can adjust the server params in `wmvc.py`
 
 ## Updates
+
+#### v0.1.3 (Mar.05.2021)
+- Add query of bitcoin price every time the program starts.
+- Add WMVC support to PCCanada
 
 #### v0.1.2 (Mar.04.2021)
 - Fix an Runtime bug when the information is loaded not as expected.
@@ -46,5 +51,5 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Contact
 
-This repo is currently maintained by Han Zhou ([@albat3ross](https://github.com/albat3ross))
+This repo is developed and maintained by Han Zhou ([@albat3ross](https://github.com/albat3ross))
 
