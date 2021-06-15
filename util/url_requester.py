@@ -16,20 +16,9 @@ from bs4 import BeautifulSoup
 REQUEST_TIME_OUT = 15
 
 
-def mock_data(info):
-    data = {} if not info.data else info.data
-    return bytes(urllib.parse.urlencode(data), encoding='utf-8')
-
-
-def mock_header(info):
-    header = dict(info.header)
-    if info.data:
-        for entry in info.data.keys():
-            header[entry] = info.data[entry]
-    return header
-
-
-def request_general(url, request_type='GET', headers={}, is_gzipped=False, name_tag="", resp_form=False):
+def request_general(url, request_type='GET', headers=None, is_gzipped=False, name_tag="", resp_form=False):
+    if headers is None:
+        headers = {}
     tic = time.perf_counter()
     try:
         request_message = urllib.request.Request(url=url, headers=headers, method=request_type)
@@ -48,3 +37,8 @@ def request_general(url, request_type='GET', headers={}, is_gzipped=False, name_
     toc = time.perf_counter()
     logging.debug(f'Request {request_type}... [url: {url}]. Time taken:\t{toc - tic:0.4f}s')
     return soup
+
+
+if __name__ == '__main__':
+    from web_info import DEFAULT_HEADER
+    print(request_general('https://github.com/', headers=DEFAULT_HEADER, is_gzipped=True).prettify())

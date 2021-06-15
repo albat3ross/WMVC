@@ -9,7 +9,7 @@ import threading
 import time
 
 from util import url_requester, utils
-from util.utils import get_latest_crypto_price
+from util.utils import get_latest_crypto_price, display_video_card_list
 
 VERSION = 0.1
 
@@ -19,7 +19,8 @@ DEFAULT_RUN_TIME = 60 * 60 * 4
 # wait time between each inspection in sec, cannot be too short
 WAIT_TIME = 20
 # monitor list file name
-DEFAULT_LIST_STR = 'web_list.csv'
+DEFAULT_WEB_LIST_STR = 'web_list.csv'
+DEFAULT_VC_LIST_STR = 'video_card_types.csv'
 # logger file name
 DEFAULT_LOGGER_NAME = 'runlog.log'
 
@@ -35,12 +36,13 @@ class VCMonitor:
             logger_file_name = DEFAULT_LOGGER_NAME
 
         self.runtime = runtime
-        self.web_list = utils.get_web_list(DEFAULT_LIST_STR)
+        self.web_list = utils.get_web_list(DEFAULT_WEB_LIST_STR)
+        self.video_card_list = utils.get_video_card_list(DEFAULT_VC_LIST_STR)
         utils.init_logger(logger_file_name)
         logging.info(f'Start initializing WMVC monitor [ver {VERSION}]')
         logging.info(f'Current time is {datetime.datetime.now().strftime("%H:%M:%S")}, the bitcoin price is [{get_latest_crypto_price()}]')
         logging.info(f'Preset runtime:       [{self.runtime // 3600}] hour | [{(self.runtime % 3600)//60}] minute | [{self.runtime %60}] second')
-        logging.info(f'Monitor list source:  [{DEFAULT_LIST_STR}].')
+        logging.info(f'Monitor list source:  [{DEFAULT_WEB_LIST_STR}].')
         logging.info(f'Log file saving as:   [{logger_file_name}].')
 
     def run(self):
@@ -51,6 +53,8 @@ class VCMonitor:
 
         if WAIT_TIME < url_requester.REQUEST_TIME_OUT:
             raise RuntimeError('Wait time cannot be less than request timeout.')
+
+        display_video_card_list(list(self.video_card_list.values()))
 
         logging.info(f'Start running WMVC monitor...\nMonitoring list length: {web_list_len}\n'
                      f'Monitoring list:[{web_list_str} \n]\nWaiting time for each inspection: [{WAIT_TIME}s]\n')
@@ -94,9 +98,8 @@ class VCMonitor:
                                                 name_tag=web_name,
                                                 is_gzipped=web_info.is_gzipped)
         find = utils.process_soup(message, web_info) if message else False
-        status = 'In STOCK' if find else 'OUT OF STOCK'
 
-        logging.debug(f'[{web_name}] | Status: {status}')
+        logging.debug(f'[{web_name}] | In STOCK: {find}')
 
         if find:
             logging.warning(f'Found card stock for [{web_name}], url: {web_info.url}')

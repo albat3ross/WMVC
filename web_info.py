@@ -1,4 +1,7 @@
 """WebInfo class"""
+from typing import Optional
+
+from video_card_type import VideoCard
 
 DEFAULT_HEADER = {
     'method': 'GET',
@@ -7,7 +10,15 @@ DEFAULT_HEADER = {
     'accept-encoding': 'gzip, deflate, br',
     'accept-language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7',
     'cache-control': 'max-age=0',
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
+
+    'sec-ch-ua': '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-fetch-dest': 'document',
+    'sec-fetch-mode': 'navigate',
+    'sec-fetch-site': 'none',
+    'sec-fetch-user': '?1',
+    'upgrade-insecure-requests': '1',
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36",
 }
 
 
@@ -57,6 +68,7 @@ def getNewEggCombo(url):
 def getPCCanada(url):
     HEADER_PCCANADA = dict(DEFAULT_HEADER)
     HEADER_PCCANADA['authority'] = 'www.pc-canada.com'
+    HEADER_PCCANADA['path'] = url.split('.com')[1]
 
     PCCANADA_TRACETAG = 'text-theme-shipping'
     PCCANADA_AVAILABLE_MESSAGE = [' On Backorder']
@@ -79,6 +91,7 @@ class WebInfo:
     trace_tag: str
     available_message: list
     trace_type: str
+    video_card: Optional[VideoCard]
 
     def __init__(self, url, header=None, data=None, request='GET',
                  is_gzipped=False, trace_tag='', ava_msg=None, trace_type='div'):
@@ -96,6 +109,7 @@ class WebInfo:
         self.trace_tag = trace_tag
         self.available_message = ava_msg
         self.trace_type = trace_type
+        self.video_card = None
 
     @staticmethod
     def GetWebInfo(url, web_type):
@@ -111,3 +125,6 @@ class WebInfo:
             raise NotImplementedError
 
 
+if __name__ == '__main__':
+    wb = WebInfo.GetWebInfo('https://www.pc-canada.com/item/TUF-GTX1650S-O4G-GAMING', 'PCCanada')
+    print('end')
